@@ -5,7 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 import streamlit as st
 import matplotlib.pyplot as plt
 import math
-from app.financial_functions import py_moving_averages, py_calculate_rsi, py_calculate_volatility, py_calculate_dividend_yield
+from app.financial_functions import py_moving_averages, py_calculate_rsi, py_calculate_volatility, py_calculate_dividend_yield # type: ignore
 def save_database(df,db_name='stock_data.db'):
     import sqlite3
 
@@ -17,7 +17,7 @@ def save_database(df,db_name='stock_data.db'):
 
 def load_LSTM(file_path):
     
-    from tensorflow.keras.models import load_model
+    from tensorflow.keras.models import load_model # type: ignore
     model = load_model(file_path)
     return model
 
@@ -69,15 +69,12 @@ def prepare_test_data(df,dataset,scaler,train_data_len,timesteps=60):
 
 def make_predictions(model,X_test,scaler,df,train_data_len):
     
-    # Make predictions
-    predictions = model.predict(X_test)
-    
+    predictions = model.predict(X_test)    
     # Reverse the scaling for predictions
     predictions = scaler.inverse_transform(predictions)
     
     # Get the true prices from the dataset
     y_test = df['Close'].values[train_data_len:]
-    
     # Reverse the scaling for true values
     y_test = scaler.inverse_transform(y_test.reshape(-1, 1))
     

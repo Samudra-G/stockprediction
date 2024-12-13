@@ -112,6 +112,8 @@ def main():
         valid = df[train_data_len:].copy()
         valid['Predictions'] = predictions
 
+        valid['Date'] = df.index[train_data_len:]
+
         st.write("Prediction vs Actual Prices")
         fig, ax = plt.subplots(figsize=(16, 8))
         ax.plot(train.index, train['Close'], label='Training Data')
@@ -123,7 +125,8 @@ def main():
         # Automatically save results to a CSV
         results_df = pd.DataFrame({
             'Actual Prices': valid['Close'].values,
-            'Predicted Prices': valid['Predictions'].values
+            'Predicted Prices': valid['Predictions'].values,
+            'Date': valid['Date'].values
         })
         results_csv_path = base_dir + '/data/prediction_results.csv'
         results_df.to_csv(results_csv_path, index=False)
